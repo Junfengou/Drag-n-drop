@@ -1,21 +1,24 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGripVertical } from '@fortawesome/free-solid-svg-icons'
+import Link from 'next/link';
 
 function MultiDragnDrop() { // App.tsx
 const initialColumns = {
-    todo: {
-      id: 'todo',
-      list: ['item 1', 'item 2', 'item 3']
+    Attribute: {
+      id: 'Attribute',
+      list: ['Tenure', 'Location', 'Manager Levels', 'Region', 'Generation', 'Squad', 'Role']
     },
-    doing: {
-      id: 'doing',
+    OrgTree: {
+      id: 'OrgTree',
       list: []
     },
-    done: {
-      id: 'done',
-      list: []
-    }
+    // Preview: {
+    //   id: 'Preview',
+    //   list: []
+    // }
   }
 const [columns, setColumns] = useState(initialColumns)
 const onDragEnd = ({ source, destination }) => {
@@ -87,13 +90,18 @@ const onDragEnd = ({ source, destination }) => {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-        <Wrapper>
-        {Object.values(columns).map(col => (
-            <Column col={col} key={col.id} />
-        ))}
-        </Wrapper>
-    </DragDropContext>
+    <>
+        <Link href="/">
+            <a style={{color: 'blue'}}>{`<-`} Back home</a>
+        </Link>
+        <DragDropContext onDragEnd={onDragEnd}>
+            <Wrapper>
+                {Object.values(columns).map(col => (
+                    <Column col={col} key={col.id} />
+                ))}
+            </Wrapper>
+        </DragDropContext>
+    </>
   )
 }
 
@@ -102,31 +110,23 @@ export default MultiDragnDrop
 const Column = ({ col: { list, id } }) => {
     return(
         <Droppable droppableId={id}>
-      {provided => (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-          >
-          <h2>{id}</h2>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              minHeight: '120px'
-            }}
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {list.map((text, index) => (
-              <Item key={text} text={text} index={index} />
-            ))}
-            {provided.placeholder}
-          </div>
-        </div>
-      )}
-    </Droppable>
+            {provided => (
+                <ColumnWrapper>
+                    <ColumnWrapperTitle>
+                        <h4>{id == 'OrgTree' ? 'Org Tree Structure' : id}</h4>
+                    </ColumnWrapperTitle>
+                    
+                    <ColumnWrapperContainer
+                        {...provided.droppableProps}
+                        ref={provided.innerRef} >
+                        {list.map((text, index) => (
+                            <Item key={text} text={text} index={index} />
+                        ))}
+                        {provided.placeholder}
+                    </ColumnWrapperContainer>
+                </ColumnWrapper>
+            )}
+        </Droppable>
     )
 }
 
@@ -134,13 +134,14 @@ const Item = ({text, index}) => {
     return(
         <Draggable draggableId={text} index={index}>
             {provided => (
-                <div
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
+                <ItemWrapper
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
                 >
-                {text}
-                </div>
+                    <div><FontAwesomeIcon icon={faGripVertical} style={{color: 'rgba(122, 134, 135, 0.5)', fontSize: 15}} /></div>
+                    <div style={{width: '90%'}} >{text}</div>
+                </ItemWrapper>
             )}
         </Draggable>
     )
@@ -148,9 +149,53 @@ const Item = ({text, index}) => {
 
 const Wrapper = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
     margin: 1.6rem auto;
-    width: 80px;
-    gap: 8px;
+    width: 50%;
 
+`
+
+const ColumnWrapper = styled.div`
+     border: solid 1px rgba(122, 134, 135, 0.2);
+     border-radius: 10px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     flex-direction: column;
+     width: 20rem;
+     height: 50vh;
+`
+const ColumnWrapperTitle = styled.div`
+    height: 20%;
+    width: 100%;
+
+    h4 {
+        padding-left: 0.5rem;
+    }
+`
+
+const ColumnWrapperContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    /* min-height: 7.5rem; */
+    /* border: solid 2px pink; */
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    height: 80%;
+    overflow-y: scroll;
+`
+
+const ItemWrapper = styled.div`
+    border: solid 2px rgba(122, 134, 135, 0.5);
+    padding: 0.5rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 `

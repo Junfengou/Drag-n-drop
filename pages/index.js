@@ -22,11 +22,11 @@ export default function Home() {
 
         <div className={styles.grid}>
 
-          <NavButton>
+          {/* <NavButton>
             <Link href="/dragndrop_1">
               <a><h5>Drag n drop {`->`}</h5></a>
             </Link>
-          </NavButton>
+          </NavButton> */}
 
           <NavButton>
             <Link href="/dragndrop_2">
