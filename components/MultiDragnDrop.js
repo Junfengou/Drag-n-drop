@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGripVertical } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link';
 
-function MultiDragnDrop() { // App.tsx
+function MultiDragnDrop() { 
 const initialColumns = {
     Attribute: {
       id: 'Attribute',
@@ -105,8 +105,6 @@ const onDragEnd = ({ source, destination }) => {
   )
 }
 
-export default MultiDragnDrop
-
 const Column = ({ col: { list, id } }) => {
     return(
         <Droppable droppableId={id}>
@@ -190,7 +188,7 @@ const ColumnWrapperContainer = styled.div`
 `
 
 const ItemWrapper = styled.div`
-    border: solid 2px rgba(122, 134, 135, 0.5);
+    border: solid 1px rgba(122, 134, 135, 0.5);
     padding: 0.5rem;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
@@ -199,3 +197,8 @@ const ItemWrapper = styled.div`
     justify-content: space-around;
     align-items: center;
 `
+
+// Refer to this guide
+// https://dev.to/imjoshellis/codealong-multi-column-drag-and-drop-in-react-3781
+
+export default MultiDragnDrop

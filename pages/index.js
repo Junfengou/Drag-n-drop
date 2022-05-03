@@ -29,8 +29,8 @@ export default function Home() {
           </NavButton> */}
 
           <NavButton>
-            <Link href="/dragndrop_2">
-              <a><h5>Drag n drop V2 {`->`}</h5></a>
+            <Link href="/dragndrop">
+              <a><h5>Drag n drop {`->`}</h5></a>
             </Link>
           </NavButton>
 
