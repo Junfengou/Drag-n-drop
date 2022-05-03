@@ -3,8 +3,10 @@ import dynamic from "next/dynamic";
 
 // https://github.com/atlassian/react-beautiful-dnd/issues/1756
 // saurabhburade's comment
+
+// Make sure the DOM and the window is loaded before loading the draggable component
 const Draggable = dynamic(import('../components/DragnDrop'));
-function about() {
+function DragnDrop() {
   const [winReady, setwinReady] = React.useState(false);
 
   React.useEffect(() => {
@@ -18,4 +20,4 @@ function about() {
   )
 }
 
-export default about
+export default DragnDrop

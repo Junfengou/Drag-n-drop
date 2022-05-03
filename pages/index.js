@@ -28,6 +28,12 @@ export default function Home() {
             </Link>
           </NavButton>
 
+          <NavButton>
+            <Link href="/dragndrop_2">
+              <a><h5>Drag n drop V2 {`->`}</h5></a>
+            </Link>
+          </NavButton>
+
           
         </div>
       </main>
@@ -47,5 +53,5 @@ const NavButton = styled.div`
   align-items: center;
   margin-top: 2rem;
   font-size: 10;
-
+  margin-right: 2rem;
 `

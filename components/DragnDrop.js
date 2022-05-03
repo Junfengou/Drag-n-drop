@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import styled from 'styled-components'
+import Link from 'next/link';
 import { dummyData } from '../assets/dummy';
 
 function DragnDrop() {
@@ -19,6 +20,9 @@ return(
     <Wrapper>
       <header>
         <h1>Drag and drop</h1>
+        <Link href="/">
+            <a style={{color: 'blue'}}>{`<-`} Back home</a>
+        </Link>
         <DragDropContext onDragEnd={handleOnDragEnd} >
           <Droppable droppableId="items" style={cardStyle.container}>
             {(provided) => (
