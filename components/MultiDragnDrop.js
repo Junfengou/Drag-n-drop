@@ -1,11 +1,14 @@
-import React, {useState} from 'react'
+import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGripVertical } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link';
+import {DataContext} from '../context/context'
 
 function MultiDragnDrop() { 
+const { greeting } = useContext(DataContext)
+console.log(greeting);
 const initialColumns = {
     Attribute: {
       id: 'Attribute',
