@@ -28,6 +28,12 @@ export default function Home() {
             </Link>
           </NavButton>
 
+          <NavButton>
+            <Link href="/tree">
+              <a><h5>Tree data {`->`}</h5></a>
+            </Link>
+          </NavButton>
+
           
         </div>
       </main>

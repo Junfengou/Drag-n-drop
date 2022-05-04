@@ -17,6 +17,7 @@
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "18.1.0",
     "react-dropzone": "^14.2.0",
+    "react-simple-tree-menu": "^1.1.18",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {

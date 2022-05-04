@@ -8,7 +8,6 @@ import {DataContext} from '../context/context'
 
 function MultiDragnDrop() { 
 const { columns, setColumns, displayCol ,setDisplayCol} = useContext(DataContext)
-console.log(displayCol);
 const onDragEnd = ({ source, destination }) => {
     // Make sure we have a valid destination
     if (destination === undefined || destination === null) return null
@@ -66,7 +65,6 @@ const onDragEnd = ({ source, destination }) => {
             id: end.id,
             list: newEndList
         }
-        // console.log(newEndCol);
         // Update the state
         setColumns(state => ({
             ...state,
@@ -101,20 +99,23 @@ const onDragEnd = ({ source, destination }) => {
   )
 }
 
-const Column = ({ col: { list, id } }) => {
+const Column = ({ col }) => {
+    // Use context state to determine the nested style value in this level by checking the id? 
+    // Pass the state down to <Item /> and go from there? 
+    console.log(col);
     return(
-        <Droppable droppableId={id}>
+        <Droppable droppableId={col.id}>
             {provided => (
                 <ColumnWrapper>
                     <ColumnWrapperTitle>
-                        <h4>{id == 'OrgTree' ? 'Org Tree Structure' : id}</h4>
+                        <h4>{col.id == 'OrgTree' ? 'Org Tree Structure' : col.id}</h4>
                     </ColumnWrapperTitle>
                     
                     <ColumnWrapperContainer
                         {...provided.droppableProps}
                         ref={provided.innerRef} >
-                        {list.map((text, index) => (
-                            <Item key={text} text={text} index={index} />
+                        {col.list.map((text, index) => (
+                            <Item key={text} text={text} index={index} id={col.id} />
                         ))}
                         {provided.placeholder}
                     </ColumnWrapperContainer>
@@ -124,11 +125,11 @@ const Column = ({ col: { list, id } }) => {
     )
 }
 
-const Item = ({text, index}) => {
+const Item = ({text, index, id}) => {
     return(
         <Draggable draggableId={text} index={index}>
             {provided => (
-                <ItemWrapper
+                <ItemWrapper index={id == 'OrgTree' ? index : 0.5}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
@@ -223,15 +224,18 @@ const ColumnWrapperContainer = styled.div`
 
 const ItemWrapper = styled.div`
     border: solid 1px rgba(122, 134, 135, 0.5);
+    /* border: solid 2px red; */
     padding: 0.5rem;
+    margin-left: ${props => props.index}rem;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
     border-radius: 15px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-`
 
+`
+// font-size: ${props => props.fontSize}px;
 // Refer to this guide
 // https://dev.to/imjoshellis/codealong-multi-column-drag-and-drop-in-react-3781
 
