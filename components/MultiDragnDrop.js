@@ -79,7 +79,7 @@ const onDragEnd = ({ source, destination }) => {
             if the start column is col: 1 then set the display col to newEndList
             else set the display col to newStartList
         */
-        setDisplayCol(newStartCol.id == 'Attribute' ? newEndList: newStartList);
+        setDisplayCol(newStartCol.id == 'Attributes' ? newEndList: newStartList);
         return null
     }
   }

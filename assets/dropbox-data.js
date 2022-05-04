@@ -1,6 +1,6 @@
 export const initialColumns = {
-    Attribute: {
-      id: 'Attribute',
+    Attributes: {
+      id: 'Attributes',
       list: [
         'Tenures',
         'Locations', 
