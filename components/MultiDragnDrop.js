@@ -44,6 +44,10 @@ const onDragEnd = ({ source, destination }) => {
 
       // Update the state
       setColumns(state => ({ ...state, [newCol.id]: newCol }))
+      if(start.id == 'OrgTree'){
+        setDisplayCol(newList);
+      }
+
       return null
     }
     else {
@@ -100,9 +104,6 @@ const onDragEnd = ({ source, destination }) => {
 }
 
 const Column = ({ col }) => {
-    // Use context state to determine the nested style value in this level by checking the id? 
-    // Pass the state down to <Item /> and go from there? 
-    console.log(col);
     return(
         <Droppable droppableId={col.id}>
             {provided => (
@@ -189,11 +190,11 @@ const ColumnWrapper = styled.div`
      height: 50vh;
 `
 const ColumnWrapperTitle = styled.div`
-    height: 20%;
+    height: 15%;
     width: 100%;
 
     h4 {
-        padding-left: 0.5rem;
+        padding-left: 1rem;
     }
 `
 
@@ -201,7 +202,7 @@ const PreviewColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 80%;
+    height: 85%;
     overflow-y: scroll;
 
     p {
