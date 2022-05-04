@@ -7,23 +7,8 @@ import Link from 'next/link';
 import {DataContext} from '../context/context'
 
 function MultiDragnDrop() { 
-const { greeting } = useContext(DataContext)
-console.log(greeting);
-const initialColumns = {
-    Attribute: {
-      id: 'Attribute',
-      list: ['Tenure', 'Location', 'Manager Levels', 'Region', 'Generation', 'Squad', 'Role']
-    },
-    OrgTree: {
-      id: 'OrgTree',
-      list: []
-    },
-    // Preview: {
-    //   id: 'Preview',
-    //   list: []
-    // }
-  }
-const [columns, setColumns] = useState(initialColumns)
+const { columns, setColumns, displayCol ,setDisplayCol} = useContext(DataContext)
+console.log(displayCol);
 const onDragEnd = ({ source, destination }) => {
     // Make sure we have a valid destination
     if (destination === undefined || destination === null) return null
@@ -81,13 +66,18 @@ const onDragEnd = ({ source, destination }) => {
             id: end.id,
             list: newEndList
         }
-
+        // console.log(newEndCol);
         // Update the state
         setColumns(state => ({
             ...state,
             [newStartCol.id]: newStartCol,
             [newEndCol.id]: newEndCol
         }))
+        /* 
+            if the start column is col: 1 then set the display col to newEndList
+            else set the display col to newStartList
+        */
+        setDisplayCol(newStartCol.id == 'Attribute' ? newEndList: newStartList);
         return null
     }
   }
@@ -97,13 +87,16 @@ const onDragEnd = ({ source, destination }) => {
         <Link href="/">
             <a style={{color: 'blue'}}>{`<-`} Back home</a>
         </Link>
-        <DragDropContext onDragEnd={onDragEnd}>
-            <Wrapper>
-                {Object.values(columns).map(col => (
-                    <Column col={col} key={col.id} />
-                ))}
-            </Wrapper>
-        </DragDropContext>
+        <Wrapper>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <DropBoxrapper>
+                    {Object.values(columns).map(col => (
+                        <Column col={col} key={col.id} />
+                    ))}
+                </DropBoxrapper>
+            </DragDropContext>
+            <DisplayColumn/> 
+        </Wrapper>
     </>
   )
 }
@@ -148,13 +141,39 @@ const Item = ({text, index}) => {
     )
 }
 
+const DisplayColumn = () => {
+    const { displayCol } = useContext(DataContext)
+    return (
+        <ColumnWrapper>
+            <ColumnWrapperTitle>
+                <h4>Preview</h4>
+            </ColumnWrapperTitle>
+            <PreviewColumnContainer>
+                {displayCol?.map((item, i) => (
+                    <p key={i}>{item}</p>
+                ))}
+            </PreviewColumnContainer>
+        </ColumnWrapper>
+    )
+}
+
 const Wrapper = styled.div`
+    /* border: solid 2px blue; */
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     justify-items: center;
     align-items: center;
+`
+
+const DropBoxrapper = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
     margin: 1.6rem auto;
-    width: 50%;
+    width: 100%;
+    height: 100%;
+    /* border: solid 2px red; */
+    padding: 0 1rem;
 
 `
 
@@ -174,6 +193,18 @@ const ColumnWrapperTitle = styled.div`
 
     h4 {
         padding-left: 0.5rem;
+    }
+`
+
+const PreviewColumnContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 80%;
+    overflow-y: scroll;
+
+    p {
+        margin: 0.5rem 1rem;
     }
 `
 
