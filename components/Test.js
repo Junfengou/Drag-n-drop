@@ -136,6 +136,7 @@ const Item = ({obj, index, id}) => {
 }
 
 const TreeComp = ({item}) => {
+    console.log(item);
     const [data, setData] = useState(treeData);
     const [cursor, setCursor] = useState(false);
 
@@ -156,15 +157,19 @@ const TreeComp = ({item}) => {
                 <h4>Preview</h4>
             </ColumnWrapperTitle>
             <PreviewColumnContainer>
-                <Tree content={item?.name} style={{marginLeft: 20, marginTop: 10}} >
-                    <Tree content={item?.data[0]}  />
-                    <Tree content={item?.data[1]} >
-                        {item?.branch?.data?.map((obj, i) => (
-                            <Tree content={obj} key={i}  /> 
-                        ) )}
-                    </Tree>
-                </Tree>
-                {/* <Treebeard data={data} onToggle={onToggle} style={styleData} /> */}
+                {/* {
+                    item != null && (
+                        <Tree content={item?.name} style={{marginLeft: 20, marginTop: 10}} >
+                            <Tree content={item?.data[0]}  />
+                            <Tree content={item?.data[1]} >
+                                {item?.branch?.data?.map((obj, i) => (
+                                    <Tree content={obj} key={i}  /> 
+                                ) )}
+                            </Tree>
+                        </Tree>
+                    )
+                } */}
+                <Treebeard data={data} onToggle={onToggle} style={styleData} />
             </PreviewColumnContainer>
         </ColumnWrapper>
     )
@@ -248,10 +253,12 @@ const ItemWrapper = styled.div`
     margin-left: ${props => props.index}rem;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
-    border-radius: 15px;
+    border-radius: 8px;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    -webkit-box-shadow: 10px 11px 9px -7px rgba(0,0,0,0.35); 
+    box-shadow: 10px 11px 9px -7px rgba(0,0,0,0.35);    
 
 `
 
