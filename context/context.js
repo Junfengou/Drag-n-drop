@@ -6,12 +6,12 @@ import { testColumn } from '../assets/test-data'
 const DataContext = createContext()
 
 const DataProvider = ({children}) => {
-    // states goes here
+    // Drag and drop page
     const [columns, setColumns] = useState(initialColumns)
     const [displayCol, setDisplayCol] = useState([])
     const [orgTreeStyle, setOrgTreeStyle] = useState(0);
 
-    // ---- Test component states
+    // ---- Test page
     const [testCol, setTestCol] = useState(testColumn)
     const [tree, setTree] = useState(null)
 

@@ -5,6 +5,10 @@ import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGripVertical } from '@fortawesome/free-solid-svg-icons'
 import Tree from 'react-animated-tree'
+import Link from 'next/link';
+import {treeData} from "../assets/tree-data"
+import {Treebeard} from 'react-treebeard';
+import styleData from '../assets/style-data';
 
 function Test() {
     const { setDisplayCol, testCol, setTestCol, tree, setTree} = useContext(DataContext)
@@ -43,7 +47,8 @@ function Test() {
                 // console.log("hi");
             }
             if(tree != null) { // tree is populated with something
-                adjustTree(newEndList?.at(-1), tree, setTree)
+                if(newEndCol.id == 'OrgTree') addToTree(newEndList?.at(-1), tree, setTree)
+                else console.log(newEndList);
             }
             setTestCol(state => ({
                 ...state,
@@ -54,14 +59,17 @@ function Test() {
         }
     };
 
-    const adjustTree = (item, tree, setTree) => {
+    const addToTree = (item, tree, setTree) => {
         if(tree.branch != null) {
             let incomingItem = item
-            adjustTree(incomingItem, tree.branch, setTree);
+            addToTree(incomingItem, tree.branch, setTree);
         }
         else {
-            tree.branch = item;
-            setTree(tree);
+            if(tree == null) return;
+            else {
+                tree.branch = item;
+                setTree(tree);
+            }
         }
         // if(tree.branch == null) tree.branch = item;
         // console.log(tree.branch);
@@ -69,9 +77,9 @@ function Test() {
     }
   return (
     <>
-        {/* <Link href="/">
+        <Link href="/">
             <a style={{color: 'blue'}}>{`<-`} Back home</a>
-        </Link> */}
+        </Link>
         <h1 style={{marginLeft: 10}}>Test</h1>
         <Wrapper>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -128,6 +136,20 @@ const Item = ({obj, index, id}) => {
 }
 
 const TreeComp = ({item}) => {
+    const [data, setData] = useState(treeData);
+    const [cursor, setCursor] = useState(false);
+
+    const onToggle = (node, toggled) => {
+        if (cursor) {
+            cursor.active = false;
+        }
+        node.active = true;
+        if (node.children) {
+            node.toggled = toggled;
+        }
+        setCursor(node);
+        setData(Object.assign({}, data))
+    }
     return(
         <ColumnWrapper>
             <ColumnWrapperTitle>
@@ -142,6 +164,7 @@ const TreeComp = ({item}) => {
                         ) )}
                     </Tree>
                 </Tree>
+                {/* <Treebeard data={data} onToggle={onToggle} style={styleData} /> */}
             </PreviewColumnContainer>
         </ColumnWrapper>
     )

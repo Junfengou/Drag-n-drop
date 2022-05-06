@@ -1,27 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {treeData} from "../assets/tree-data"
-import TreeMenu, { defaultChildren, ItemComponent } from 'react-simple-tree-menu';
-// import default minimal styling or your own styling
-import '../node_modules/react-simple-tree-menu/dist/main.css';
+import {Treebeard} from 'react-treebeard';
+import styleData from '../assets/style-data';
+// import { styleData } from '../assets/style-data';
 
 function TreeData() {
-    console.log(treeData);
+    const [data, setData] = useState(treeData);
+    const [cursor, setCursor] = useState(false);
+
+    const onToggle = (node, toggled) => {
+        if (cursor) {
+            cursor.active = false;
+        }
+        node.active = true;
+        if (node.children) {
+            node.toggled = toggled;
+        }
+        setCursor(node);
+        setData(Object.assign({}, data))
+    }
   return (
     <div>
-        <h1>Spicy Tree</h1>
-        {/* <TreeMenu data={treeData} /> */}
-        <TreeMenu data={treeData}>
-            {({ search, items }) => (
-                <ul>
-                    {items.map(({key, ...props}) => (
-                    <ItemComponent key={key} {...props} />
-                    ))}
-                </ul>
-            )}
-        </TreeMenu>
+        <Treebeard data={data} onToggle={onToggle} style={styleData} />
     </div>
   )
 }
+
 
 
 export default TreeData
