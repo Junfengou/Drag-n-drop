@@ -34,6 +34,12 @@ export default function Home() {
             </Link>
           </NavButton>
 
+          <NavButton>
+            <Link href="/test">
+              <a><h5>Proto {`->`}</h5></a>
+            </Link>
+          </NavButton>
+
           
         </div>
       </main>

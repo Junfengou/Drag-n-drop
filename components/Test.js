@@ -1,103 +1,87 @@
 import React, { useState, useContext } from 'react'
+import {DataContext} from '../context/context'
 import styled from 'styled-components'
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGripVertical } from '@fortawesome/free-solid-svg-icons'
-import Link from 'next/link';
-import {DataContext} from '../context/context'
+import Tree from 'react-animated-tree'
 
-function MultiDragnDrop() { 
-const { columns, setColumns, displayCol ,setDisplayCol} = useContext(DataContext)
-const onDragEnd = ({ source, destination }) => {
-    // Make sure we have a valid destination
-    if (destination === undefined || destination === null) return null
+function Test() {
+    const { setDisplayCol, testCol, setTestCol, tree, setTree} = useContext(DataContext)
+    const onDragEnd = ({ source, destination }) => {
+        if (destination === undefined || destination === null) return null
+        if (source.droppableId === destination.droppableId &&
+            destination.index === source.index) {return null}
 
-    // If the source and destination columns are the same
-    // AND if the index is the same, the item isn't moving
-    if (
-      source.droppableId === destination.droppableId &&
-      destination.index === source.index
-    )
-      return null
+        const start = testCol[source.droppableId]
+        const end = testCol[destination.droppableId]
+
+        if (start === end) {
+            // moving within the same col
+        } else {
+            const newStartList = start.list.filter(
+                (_, idx) => idx !== source.index
+            )
+            const newStartCol = {
+                id: start.id,
+                list: newStartList
+            }
+            const newEndList = end.list
+            newEndList.splice(destination.index, 0, start.list[source.index])
 
 
-    // Set start and end variables
-    const start = columns[source.droppableId]
-    const end = columns[destination.droppableId]
+            // console.log(newEndList);
 
-    // If start is the same as end, we're in the same column
-    if (start === end) {
-      // Move the item within the list
-      // Start by making a new list without the dragged item
-      const newList = start.list.filter(
-        (_, idx) => idx !== source.index
-      )
+            // console.log(newEndList?.at(-1));
+            const newEndCol = {
+                id: end.id,
+                list: newEndList
+            }
 
-      // Then insert the item at the right location
-      newList.splice(destination.index, 0, start.list[source.index])
+            if(newEndCol.id == "OrgTree" && tree == null) {
+                setTree(newEndList?.at(-1));
+                // console.log("hi");
+            }
+            if(tree != null) { // tree is populated with something
+                adjustTree(newEndList?.at(-1), tree, setTree)
+            }
+            setTestCol(state => ({
+                ...state,
+                [newStartCol.id]: newStartCol,
+                [newEndCol.id]: newEndCol
+            }))
 
-      // Then create a new copy of the column object
-      const newCol = {
-        id: start.id,
-        list: newList
-      }
-
-      // Update the state
-      setColumns(state => ({ ...state, [newCol.id]: newCol }))
-      if(start.id == 'OrgTree'){
-        setDisplayCol(newList);
-      }
-
-      return null
-    }
-    else {
-        // If start is different from end, we need to update multiple columns
-        // Filter the start list like before
-        const newStartList = start.list.filter(
-            (_, idx) => idx !== source.index
-        )
-        const newStartCol = {
-            id: start.id,
-            list: newStartList
         }
+    };
+
+    const adjustTree = (item, tree, setTree) => {
+        if(tree.branch != null) {
+            let incomingItem = item
+            adjustTree(incomingItem, tree.branch, setTree);
+        }
+        else {
+            tree.branch = item;
+            setTree(tree);
+        }
+        // if(tree.branch == null) tree.branch = item;
+        // console.log(tree.branch);
         
-        // Make a new end list array
-        const newEndList = end.list
-        newEndList.splice(destination.index, 0, start.list[source.index])
-
-        const newEndCol = {
-            id: end.id,
-            list: newEndList
-        }
-        // Update the state
-        setColumns(state => ({
-            ...state,
-            [newStartCol.id]: newStartCol,
-            [newEndCol.id]: newEndCol
-        }))
-        /* 
-            if the start column is col: 1 then set the display col to newEndList
-            else set the display col to newStartList
-        */
-        setDisplayCol(newStartCol.id == 'Attributes' ? newEndList: newStartList);
-        return null
     }
-  }
-
   return (
     <>
-        <Link href="/">
+        {/* <Link href="/">
             <a style={{color: 'blue'}}>{`<-`} Back home</a>
-        </Link>
+        </Link> */}
+        <h1 style={{marginLeft: 10}}>Test</h1>
         <Wrapper>
             <DragDropContext onDragEnd={onDragEnd}>
                 <DropBoxrapper>
-                    {Object.values(columns).map(col => (
+                    {Object.values(testCol).map(col => (
                         <Column col={col} key={col.id} />
                     ))}
                 </DropBoxrapper>
             </DragDropContext>
-            <DisplayColumn/> 
+            <TreeComp item={tree}/>
         </Wrapper>
     </>
   )
@@ -115,8 +99,8 @@ const Column = ({ col }) => {
                     <ColumnWrapperContainer
                         {...provided.droppableProps}
                         ref={provided.innerRef} >
-                        {col.list.map((text, index) => (
-                            <Item key={text} text={text} index={index} id={col.id} />
+                        {col.list.map((obj, index) => (
+                            <Item key={obj.name} obj={obj} index={index} id={col.id} />
                         ))}
                         {provided.placeholder}
                     </ColumnWrapperContainer>
@@ -126,9 +110,9 @@ const Column = ({ col }) => {
     )
 }
 
-const Item = ({text, index, id}) => {
+const Item = ({obj, index, id}) => {
     return(
-        <Draggable draggableId={text} index={index}>
+        <Draggable draggableId={obj.name} index={index}>
             {provided => (
                 <ItemWrapper index={id == 'OrgTree' ? index : 0.5}
                     ref={provided.innerRef}
@@ -136,28 +120,39 @@ const Item = ({text, index, id}) => {
                     {...provided.dragHandleProps}
                 >
                     <div><FontAwesomeIcon icon={faGripVertical} style={{color: 'rgba(122, 134, 135, 0.5)', fontSize: 15}} /></div>
-                    <div style={{width: '90%'}} >{text}</div>
+                    <div style={{width: '90%'}} >{obj.name}</div>
                 </ItemWrapper>
             )}
         </Draggable>
     )
 }
 
-const DisplayColumn = () => {
-    const { displayCol } = useContext(DataContext)
-    return (
+const TreeComp = ({item}) => {
+    return(
         <ColumnWrapper>
             <ColumnWrapperTitle>
                 <h4>Preview</h4>
             </ColumnWrapperTitle>
             <PreviewColumnContainer>
-                {displayCol?.map((item, i) => (
-                    <p key={i}>{item}</p>
-                ))}
+                <Tree content={item?.name} style={{marginLeft: 20, marginTop: 10}} >
+                    <Tree content={item?.data[0]}  />
+                    <Tree content={item?.data[1]} >
+                        {item?.branch?.data?.map((obj, i) => (
+                            <Tree content={obj} key={i}  /> 
+                        ) )}
+                    </Tree>
+                </Tree>
             </PreviewColumnContainer>
         </ColumnWrapper>
     )
 }
+
+const treeStyle = {
+    position: 'absolute',
+    borderWidth: 2,
+    borderColor: 'red'
+}
+
 
 const Wrapper = styled.div`
     /* border: solid 2px blue; */
@@ -181,7 +176,6 @@ const DropBoxrapper = styled.div`
 
 const ColumnWrapper = styled.div`
      border: solid 1px rgba(122, 134, 135, 0.2);
-     /* border: solid 2px red; */
      border-radius: 10px;
      display: flex;
      justify-content: center;
@@ -237,8 +231,5 @@ const ItemWrapper = styled.div`
     align-items: center;
 
 `
-// font-size: ${props => props.fontSize}px;
-// Refer to this guide
-// https://dev.to/imjoshellis/codealong-multi-column-drag-and-drop-in-react-3781
 
-export default MultiDragnDrop
+export default Test

@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 // Make sure the DOM and the window is loaded before loading the draggable component
 
 const Draggable = dynamic(import('../components/MultiDragnDrop'));
-function dragndrop_2() {
+function dragndrop() {
     const [winReady, setwinReady] = React.useState(false);
 
     React.useEffect(() => {
@@ -20,5 +20,5 @@ function dragndrop_2() {
   )
 }
 
-export default dragndrop_2
+export default dragndrop
 
