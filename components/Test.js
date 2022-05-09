@@ -80,7 +80,7 @@ function Test() {
         <Link href="/">
             <a style={{color: 'blue'}}>{`<-`} Back home</a>
         </Link>
-        <h1 style={{marginLeft: 10}}>Test</h1>
+        <h1 style={{marginLeft: 10}}>Beautiful DnD W/ Tree</h1>
         <Wrapper>
             <DragDropContext onDragEnd={onDragEnd}>
                 <DropBoxrapper>
@@ -157,7 +157,7 @@ const TreeComp = ({item}) => {
                 <h4>Preview</h4>
             </ColumnWrapperTitle>
             <PreviewColumnContainer>
-                {/* {
+                {
                     item != null && (
                         <Tree content={item?.name} style={{marginLeft: 20, marginTop: 10}} >
                             <Tree content={item?.data[0]}  />
@@ -168,8 +168,8 @@ const TreeComp = ({item}) => {
                             </Tree>
                         </Tree>
                     )
-                } */}
-                <Treebeard data={data} onToggle={onToggle} style={styleData} />
+                }
+                {/* <Treebeard data={data} onToggle={onToggle} style={styleData} /> */}
             </PreviewColumnContainer>
         </ColumnWrapper>
     )

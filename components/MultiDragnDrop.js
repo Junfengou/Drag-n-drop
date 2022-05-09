@@ -8,6 +8,10 @@ import {DataContext} from '../context/context'
 
 function MultiDragnDrop() { 
 const { columns, setColumns, displayCol ,setDisplayCol} = useContext(DataContext)
+
+const something = (stuff) => {
+    console.log(stuff);
+}
 const onDragEnd = ({ source, destination }) => {
     // Make sure we have a valid destination
     if (destination === undefined || destination === null) return null
@@ -20,7 +24,8 @@ const onDragEnd = ({ source, destination }) => {
     )
       return null
 
-
+    console.log(source);
+    console.log(destination);
     // Set start and end variables
     const start = columns[source.droppableId]
     const end = columns[destination.droppableId]
@@ -90,12 +95,12 @@ const onDragEnd = ({ source, destination }) => {
             <a style={{color: 'blue'}}>{`<-`} Back home</a>
         </Link>
         <Wrapper>
-            <DragDropContext onDragEnd={onDragEnd}>
-                <DropBoxrapper>
+            <DragDropContext onDragEnd={something} collisionDetection >
+                <DropBoxWrapper>
                     {Object.values(columns).map(col => (
                         <Column col={col} key={col.id} />
                     ))}
-                </DropBoxrapper>
+                </DropBoxWrapper>
             </DragDropContext>
             <DisplayColumn/> 
         </Wrapper>
@@ -167,7 +172,7 @@ const Wrapper = styled.div`
     align-items: center;
 `
 
-const DropBoxrapper = styled.div`
+const DropBoxWrapper = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -198,19 +203,6 @@ const ColumnWrapperTitle = styled.div`
         padding-left: 1rem;
     }
 `
-
-const PreviewColumnContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 85%;
-    overflow-y: scroll;
-
-    p {
-        margin: 0.5rem 1rem;
-    }
-`
-
 const ColumnWrapperContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -222,6 +214,18 @@ const ColumnWrapperContainer = styled.div`
     width: 100%;
     height: 80%;
     overflow-y: scroll;
+`
+
+const PreviewColumnContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 85%;
+    overflow-y: scroll;
+
+    p {
+        margin: 0.5rem 1rem;
+    }
 `
 
 const ItemWrapper = styled.div`

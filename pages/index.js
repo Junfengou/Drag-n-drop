@@ -24,23 +24,34 @@ export default function Home() {
 
           <NavButton>
             <Link href="/dragndrop">
-              <a><h5>Drag n drop {`->`}</h5></a>
+              <a><h5>Beautiful Dnd {`->`}</h5></a>
             </Link>
           </NavButton>
 
-          <NavButton>
+          {/* <NavButton>
             <Link href="/tree">
               <a><h5>Tree data {`->`}</h5></a>
             </Link>
-          </NavButton>
+          </NavButton> */}
 
           <NavButton>
             <Link href="/test">
-              <a><h5>Test {`->`}</h5></a>
+              <a><h5>Beautiful DnD w/ Tree {`->`}</h5></a>
             </Link>
           </NavButton>
 
-          
+          <NavButton>
+            <Link href="/dndkit">
+              <a><h5>Dnd kit {`->`}</h5></a>
+            </Link>
+          </NavButton>
+
+          <NavButton>
+            <Link href="/dndkittree">
+                <a><h5>Dnd kit W/ Tree {`->`}</h5></a>
+            </Link>
+          </NavButton>
+
         </div>
       </main>
     </div>
@@ -60,4 +71,6 @@ const NavButton = styled.div`
   margin-top: 2rem;
   font-size: 10;
   margin-right: 2rem;
+  min-width: 6rem;
+  min-height: 6rem;
 `
