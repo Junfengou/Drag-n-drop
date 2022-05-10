@@ -38,3 +38,5 @@ const ItemWrapper = styled.div`
     align-items: center;
     min-width: 5rem;
 `
+
+// https://codesandbox.io/s/dnd-kit-multi-containers-forked-qndez8?file=/src/container.js

@@ -40,15 +40,21 @@ export default function Home() {
             </Link>
           </NavButton>
 
-          <NavButton>
+          {/* <NavButton>
             <Link href="/dndkit">
               <a><h5>Dnd kit {`->`}</h5></a>
+            </Link>
+          </NavButton> */}
+
+          <NavButton>
+            <Link href="/dndkittree">
+                <a><h5>Dnd kit  {`->`}</h5></a>
             </Link>
           </NavButton>
 
           <NavButton>
-            <Link href="/dndkittree">
-                <a><h5>Dnd kit W/ Tree {`->`}</h5></a>
+            <Link href="/reactdnd">
+                <a><h5>React DnD  {`->`}</h5></a>
             </Link>
           </NavButton>
 

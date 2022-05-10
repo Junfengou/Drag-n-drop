@@ -136,7 +136,7 @@ function App() {
 export default App
 
 const AppWrapper = styled.div`
-  border: solid 2px red;
+  /* border: solid 2px red; */
   height: 100vh;
   width: 100%;
   display: flex;
